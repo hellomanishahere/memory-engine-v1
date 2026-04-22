@@ -14,7 +14,6 @@ export default function App() {
     if (saved) {
       setMemories(JSON.parse(saved));
     } else {
-      // Default starter data
       const starter = [
         { id: 1, title: "The Beginning", content: "Where our story started. Type 'Boo Boo' or 'Mussoorie' to see more.", tags: ["us", "start"] },
         { id: 2, title: "Mussoorie 2026", content: "Counting down the days until our mountain escape! 🏔️", tags: ["trip", "june", "mussoorie"] }
@@ -50,6 +49,7 @@ export default function App() {
 
   return (
     <div className={`min-h-screen flex flex-col items-center w-full transition-colors duration-500 ${darkMode ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-900'}`}>
+      
       <nav className="w-full max-w-5xl p-6 flex justify-between items-center z-50">
         <div className="flex items-center gap-2 font-bold text-xl tracking-tighter">
           <div className="w-8 h-8 bg-pink-500 rounded-lg flex items-center justify-center text-white">M</div>
@@ -81,7 +81,7 @@ export default function App() {
 
         <AnimatePresence>
           {isAdmin && (
-            <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="mb-12 p-6 rounded-2xl bg-pink-500/5 border border-pink-500/20 overflow-hidden">
+            <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="w-full mb-12 p-6 rounded-2xl bg-pink-500/5 border border-pink-500/20 overflow-hidden">
               <div className="flex items-center gap-2 mb-4 text-pink-500 font-semibold"><Plus size={18}/> New Index Entry</div>
               <div className="space-y-3">
                 <input placeholder="Memory Title" className="w-full p-3 rounded-xl bg-slate-900/50 border border-slate-800 focus:border-pink-500 outline-none" value={newEntry.title} onChange={e => setNewEntry({...newEntry, title: e.target.value})} />
@@ -96,13 +96,26 @@ export default function App() {
         <div className="w-full space-y-6">
           {query.length > 0 ? (
             filteredResults.map((m) => (
-              <motion.div layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} key={m.id} className="w-full p-8 rounded-3xl bg-white/5 border border-white/10 hover:border-pink-500/30 transition-all group relative shadow-xl">
+              <motion.div 
+                layout 
+                initial={{ opacity: 0 }} 
+                animate={{ opacity: 1 }} 
+                key={m.id} 
+                className="w-full p-8 rounded-3xl bg-white/5 border border-white/10 hover:border-pink-500/30 transition-all group relative shadow-xl"
+              >
                 <div className="flex justify-between items-start">
                   <h3 className="text-xl font-bold text-pink-500 flex items-center gap-2">
                     {m.tags.includes('trip') && <MapPin size={18} />}
                     {m.title}
                   </h3>
-                  {isAdmin && <Trash2 size={18} className="cursor-pointer text-slate-600 hover:text-red-500 transition-colors" onClick={() => deleteMemory(m.id)} />}
+                  {isAdmin && (
+                    <button
+                      onClick={() => deleteMemory(m.id)}
+                      className="p-2 hover:bg-red-500/10 rounded-full text-slate-600 hover:text-red-500 transition-colors"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  )}
                 </div>
                 <p className="mt-3 text-lg text-slate-300 leading-relaxed">{m.content}</p>
                 <div className="mt-4 flex flex-wrap gap-2">
@@ -118,7 +131,7 @@ export default function App() {
               <p>Type something to search the engine...</p>
             </div>
           )}
-          
+
           {query.length > 0 && filteredResults.length === 0 && (
             <div className="text-center py-10 text-slate-500 italic">
               "No data found for this query. Try searching for 'Boo Boo'?"
@@ -128,7 +141,7 @@ export default function App() {
       </main>
 
       <footer className="w-full py-10 text-center text-slate-500 border-t border-white/5 bg-slate-950/50 backdrop-blur-md">
-        Built with ❤️ for Boo • Memory Engine v1.0
+        Designed for Boo • Release v1.0.2
       </footer>
     </div>
   );
